@@ -1,4 +1,5 @@
 
+from multiprocessing import Event
 import PySimpleGUI as sg
 
 sg.theme('Dark Grey 13')
@@ -19,13 +20,21 @@ searchLayout = [[sg.Text('Enter Barcode To Search:', font=headerFont, justificat
 #           [sg.OK(size=(15,1),key="ok")]]
 
 tabgrp = [[sg.TabGroup([[sg.Tab('Add Item', addLayout,border_width =10,
-                                tooltip='Personal details', element_justification= 'center'),
-                    sg.Tab('Search Item', searchLayout, element_justification= 'center')]])]] 
+                                tooltip='Personal details', element_justification= 'center' , key= 'add'),
+                    sg.Tab('Search Item', searchLayout, element_justification= 'center', key='search')]])]] 
 
 window = sg.Window('Willow Sound System', tabgrp, margins=(100,100))
 
-event, values = window.read()
+# event, values = window.read()
 
+while True:
+    event,values = window.read()
+
+    if event == sg.WINDOW_CLOSED or event == "Exit":
+        break
+    else:
+        print("barcode has been scanned")
+        print(values)
 # while True:
 #     # event,values = window.read()
 
@@ -42,3 +51,7 @@ event, values = window.read()
 
 
 window.close()
+
+def addCode():
+    return
+
