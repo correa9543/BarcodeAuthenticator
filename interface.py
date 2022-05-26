@@ -1,6 +1,7 @@
 
 from multiprocessing import Event
 import PySimpleGUI as sg
+import openAndSearchFile as oas
 
 sg.theme('Dark Grey 13')
 
@@ -8,10 +9,11 @@ inputFont = ("Arial, 15")
 headerFont = ("Arial, 20")
 
 addLayout = [[sg.Text('Enter Barcode To Add:', font=headerFont, justification="c")],
-          [sg.Input(font=inputFont), sg.FileBrowse(size=(15,1))],
+          [sg.Input(font=inputFont)],
           [sg.OK(size=(15,1)), sg.Cancel(size=(15,1))]]
 
-searchLayout = [[sg.Text('Enter Barcode To Search:', font=headerFont, justification="c")],
+searchLayout = [[sg.Text('', font=headerFont, justification="c", key="resultText")],
+    [sg.Text('Enter Barcode To Search:', font=headerFont, justification="c")],
           [sg.Input(font=inputFont), sg.FileBrowse(size=(15,1))],
           [sg.OK(size=(15,1)), sg.Cancel(size=(15,1))]]
 
@@ -25,7 +27,9 @@ tabgrp = [[sg.TabGroup([[sg.Tab('Add Item', addLayout,border_width =10,
 
 window = sg.Window('Willow Sound System', tabgrp, margins=(100,100))
 
-# event, values = window.read()
+oas.beginModule()
+oas.printBarCodes()
+barCodePresent = False
 
 while True:
     event,values = window.read()
@@ -35,23 +39,23 @@ while True:
     else:
         print("barcode has been scanned")
         print(values)
-# while True:
-#     # event,values = window.read()
 
-#     if event == sg.WINDOW_CLOSED or event == "Exit":
-#         break
-#     elif values["add"] == True and event == "OK":
-#         window = sg.Window('Willow Sound System', addLayout, margins=(100,100))
-#         event, values = window.read()
-#         values["add"] = False
-#         break
+    if values[2] == 'add' and event == 'OK':
+        oas.addBarcodeToList(values[0])
+        oas.putBarcodesInFile()
 
-#     else:
-#         layout = searchLayout
+    
+    if values[2] == 'search' and event == 'OK':
+        barCodePresent = oas.lookForBarCode(values[1])
+        if barCodePresent == True:
+            window['resultText'].update('Item was purchased here!')
+        else:
+            window['resultText'].update('Item was NOT purchased here!')
+
 
 
 window.close()
 
-def addCode():
-    return
+
+
 

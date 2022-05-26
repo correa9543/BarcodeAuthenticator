@@ -1,18 +1,18 @@
-from urllib.robotparser import RobotFileParser
-from numpy import equal
+# from urllib.robotparser import RobotFileParser
+# from numpy import equal
 from openpyxl import Workbook
 import os.path
-import pandas as pd
+# import pandas as pd
 from openpyxl import load_workbook
 
 
 
-def createFile(path):
+def createFile():
     workbook = Workbook()
-    workbook.save(path)
+    workbook.save(filePath)
 
 # Grabbing the barcodes from the excel file
-def grabFileBarcodes(filePath):
+def grabFileBarcodes():
     wb = load_workbook(filePath)
     source = wb["Sheet"]
     for cell in source['1']:
@@ -20,7 +20,6 @@ def grabFileBarcodes(filePath):
             barcodes.append(cell.value)
 
 def removeBarCode(barcode):
-
     if barcode not in barcodes:
         print("Barcode: ", barcode, " is not in the datasheet!")
     else:
@@ -29,6 +28,11 @@ def removeBarCode(barcode):
         barcodes.remove(barcode)
         print("Barcode: ", barcode, " has been removed!")
 
+def lookForBarCode(barcode):
+    if barcode in barcodes:
+        return True
+    else:
+        return False
 
 def addBarcodeToList(barcode):
     if barcode not in barcodes:
@@ -37,8 +41,6 @@ def addBarcodeToList(barcode):
         barcodes.append(barcode)
     else:
         print("Barcode: ",barcode, " already in data sheet")
-
-
 
 
 def putBarcodesInFile():
@@ -52,26 +54,26 @@ def putBarcodesInFile():
     else:
         print("file not changed")
 
-# Change the path name to see if the file exists in the given path, if it doesnt, create the file
-desktop = os.path.normpath(os.path.expanduser("~/Desktop"))
-filePath = desktop + '/barcodes.xlsx'
-barCodesListChanged = False
-barcodes = []
 
-if os.path.isfile(filePath):
-    grabFileBarcodes(filePath)
-    print ("File exists")
-else:
-    createFile(filePath)
+desktop = os.path.normpath(os.path.expanduser("~/Desktop")) # Gabbing the path to the desktop
+filePath = desktop + '/barcodes.xlsx'     # Adding the name of the file to the desktop path
+barCodesListChanged = False               # This variable will let us know if something was changed in the list of barcodes    
+barcodes = []                             # This list will hold all the barcodes we have in the spreadsheet
 
-# addBarcodeToList(999999999)
-# addBarcodeToList(999999998)
-# addBarcodeToList(999999997)
-# addBarcodeToList(999999996)
-removeBarCode(999999997)
+# Checking to see if the excel spreadsheet already exists or not, if it does not, we create it
+def beginModule():
+    print("started module")
+    if os.path.isfile(filePath):
+        grabFileBarcodes()
+        print ("File exists")
+    else:
+        createFile()
+
+def printBarCodes():
+    print(barcodes)
+
+# putBarcodesInFile()
+# print(barcodes)
 
 
-
-putBarcodesInFile()
-print(barcodes)
 
