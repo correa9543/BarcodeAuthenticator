@@ -22,11 +22,13 @@ def grabFileBarcodes():
 def removeBarCode(barcode):
     if barcode not in barcodes:
         print("Barcode: ", barcode, " is not in the datasheet!")
+        return False
     else:
         global barCodesListChanged
         barCodesListChanged = True
         barcodes.remove(barcode)
         print("Barcode: ", barcode, " has been removed!")
+        return True
 
 def lookForBarCode(barcode):
     if barcode in barcodes:
@@ -39,8 +41,10 @@ def addBarcodeToList(barcode):
         global barCodesListChanged
         barCodesListChanged = True
         barcodes.append(barcode)
+        return True
     else:
         print("Barcode: ",barcode, " already in data sheet")
+        return False
 
 
 def putBarcodesInFile():
