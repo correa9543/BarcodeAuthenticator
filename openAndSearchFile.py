@@ -2,7 +2,7 @@
 # from numpy import equal
 from openpyxl import Workbook
 import os.path
-# import pandas as pd
+import pandas as pd
 from openpyxl import load_workbook
 
 
@@ -52,7 +52,9 @@ def putBarcodesInFile():
         wb = load_workbook(filePath)
         ws = wb.active
         ws.delete_rows(1,2)
-        ws.append(barcodes)
+        for x in range(1,len(barcodes)):
+            ws.cell(row=x, column=1).value = barcodes[x]
+        # ws.append(barcodes)
         wb.save(filename=filePath)
         print("File changed")
     else:

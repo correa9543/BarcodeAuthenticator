@@ -61,6 +61,8 @@ while True:
         if addResult == True:
             oas.putBarcodesInFile()
             window['addResultText'].update('Item ' + values[1] +  ' was added to the file!')
+            window['addResultText'].update(background_color="#006400", text_color="#FFF")
+
 
         else:
             window['addResultText'].update('Item ' + values[1] +  ' is already in the file!')
@@ -72,12 +74,16 @@ while True:
             barCodePresent = oas.lookForBarCode(values[1])
             if barCodePresent == True:
                 window['resultText'].update('Item ' + values[1] +  ' was purchased here!')
+                window['resultText'].update(background_color="#006400")
+
                 # window['resultText'].update('')
                 # window['resultText'].update('') 
         
 
             else:
                 window['resultText'].update('Item ' + values[1] + ' was NOT purchased here!')
+                window['resultText'].update(background_color="#BF0000")
+
                 # window['resultText'].update('')    
         else:
             window['resultText'].update("No barcode was entered.")
